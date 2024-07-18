@@ -6,13 +6,18 @@ export { getUpdates } from "./utils";
 export * from "@gramio/files";
 export type * from "@gramio/types";
 
-const BASE_URL = "https://api.telegram.org/bot";
+export interface TelegramOptions {
+	baseURL?: string;
+	requestOptions?: Omit<RequestInit, "method" | "body">;
+}
 
 export class Telegram {
 	token: string;
+	options: TelegramOptions & { baseURL: string };
 
-	constructor(token: string) {
+	constructor(token: string, options?: TelegramOptions) {
 		this.token = token;
+		this.options = { baseURL: "https://api.telegram.org/bot", ...options };
 	}
 
 	readonly api = new Proxy({} as APIMethodRawResponse, {
@@ -25,10 +30,14 @@ export class Telegram {
 				// @ts-expect-error fix types at convertJsonToFormData
 				const formData = await convertJsonToFormData(method, args);
 
-				const response = await fetch(`${BASE_URL}${this.token}/${method}`, {
-					method: "POST",
-					body: formData,
-				});
+				const response = await fetch(
+					`${this.options.baseURL}${this.token}/${method}`,
+					{
+						method: "POST",
+						body: formData,
+						...this.options.requestOptions,
+					},
+				);
 
 				return response.json() as Promise<TelegramAPIResponse<T>>;
 			},
