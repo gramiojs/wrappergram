@@ -2,6 +2,20 @@
     "name": "wrappergram",
     "version": "0.0.1",
     "main": "./dist/index.cjs",
+    "description": "Simple and tiny code-generated Telegram Bot API wrapper for TypeScript/JavaScript with file upload support",
+    "keywords": [
+        "telegram",
+        "telegram-bot",
+        "telegram-bot-api",
+        "bot",
+        "framework",
+        "library",
+        "wrapper",
+        "types",
+        "client",
+        "tiny",
+        "long-polling"
+    ],
     "module": "./dist/index.js",
     "types": "./dist/index.d.ts",
     "exports": {
