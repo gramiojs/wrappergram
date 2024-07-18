@@ -4,7 +4,7 @@ import type {
 	TelegramAPIResponse,
 	TelegramUpdate,
 } from "@gramio/types";
-import type { Telegram } from ".";
+import type { Telegram } from "./index";
 
 export type APIMethodRawResponse = {
 	[APIMethod in keyof APIMethods]: APIMethodParams<APIMethod> extends undefined
