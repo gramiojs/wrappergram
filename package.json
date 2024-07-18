@@ -1,6 +1,6 @@
 {
     "name": "wrappergram",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "main": "./dist/index.cjs",
     "module": "./dist/index.js",
     "types": "./dist/index.d.ts",
@@ -19,9 +19,7 @@
     "type": "module",
     "devDependencies": {
         "@types/bun": "latest",
-        "pkgroll": "^2.1.1"
-    },
-    "peerDependencies": {
+        "pkgroll": "^2.1.1",
         "typescript": "^5.5.3"
     },
     "dependencies": {
