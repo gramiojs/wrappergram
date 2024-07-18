@@ -107,6 +107,6 @@ telegram.api.sendDocument({
 });
 ```
 
-This example cost - [![bundlejs](<https://deno.bundlejs.com/badge?q=wrappergram&treeshake=[*]&text=%22const+telegram+=+new+Telegram(process.env.BOT_TOKEN);+\n\ntelegram.api.sendPhoto({+\n++chat_id:+%22@gramio_forum%22,+\n++text:+%22Hello,+world!%22,+\n++photo:+MediaUpload.path(%22./cute-cat.png%22),+\n});%22>)](https://bundlejs.com/?q=wrappergram&treeshake=%5B*%5D&text=%22const+telegram+%3D+new+Telegram%28process.env.BOT_TOKEN%29%3B+%5Cn%5Cntelegram.api.sendPhoto%28%7B+%5Cn++chat_id%3A+%5C%22%40gramio_forum%5C%22%2C+%5Cn++text%3A+%5C%22Hello%2C+world%21%5C%22%2C+%5Cn++photo%3A+MediaUpload.path%28%5C%22.%2Fcute-cat.png%5C%22%29%2C+%5Cn%7D%29%3B%22)
+This example cost - [![bundlejs](<https://deno.bundlejs.com/badge?q=wrappergram&text=%22const+telegram+=+new+Telegram(process.env.BOT_TOKEN);+\n\ntelegram.api.sendPhoto({+\n++chat_id:+%22@gramio_forum%22,+\n++text:+%22Hello,+world!%22,+\n++photo:+MediaUpload.path(%22./cute-cat.png%22),+\n});%22>)](https://bundlejs.com/?q=wrappergram&treeshake=%5B*%5D&text=%22const+telegram+%3D+new+Telegram%28process.env.BOT_TOKEN%29%3B+%5Cn%5Cntelegram.api.sendPhoto%28%7B+%5Cn++chat_id%3A+%5C%22%40gramio_forum%5C%22%2C+%5Cn++text%3A+%5C%22Hello%2C+world%21%5C%22%2C+%5Cn++photo%3A+MediaUpload.path%28%5C%22.%2Fcute-cat.png%5C%22%29%2C+%5Cn%7D%29%3B%22)
 
 [Read more here](https://gramio.dev/files/overview)
