@@ -6,7 +6,7 @@
 [![npm](https://img.shields.io/npm/v/wrappergram?logo=npm&style=flat&labelColor=000&color=3b82f6)](https://www.npmjs.org/package/wrappergram)
 [![JSR](https://jsr.io/badges/@gramio/wrappergram)](https://jsr.io/@gramio/wrappergram)
 [![JSR Score](https://jsr.io/badges/@gramio/wrappergram/score)](https://jsr.io/@gramio/wrappergram)
-[![bundlejs](<https://edge.bundlejs.com/?text=import{Telegram}from%22wrappergram%22;consttelegram=newTelegram(process.env.BOT_TOKENasstring);telegram.api.sendMessage({chat_id:617580375,text:%22Hello!%22,});&badge>)](https://bundlejs.com)
+[![bundlejs](<https://deno.bundlejs.com/badge?q=wrappergram&treeshake=[*]&text=%22const+telegram+=+new+Telegram(process.env.BOT_TOKEN+as+string);\n\ntelegram.api.sendMessage({\n++++chat_id:+617580375,\n++++text:+%22Hello!%22,\n});%22>)](https://bundlejs.com/?q=wrappergram&treeshake=%5B*%5D&text=%22const+telegram+%3D+new+Telegram%28process.env.BOT_TOKEN+as+string%29%3B%5Cn%5Cntelegram.api.sendMessage%28%7B%5Cn++++chat_id%3A+617580375%2C%5Cn++++text%3A+%5C%22Hello%21%5C%22%2C%5Cn%7D%29%3B%22)
 
 </div>
 
@@ -18,7 +18,7 @@ Simple and tiny code-generated **Telegram Bot API** wrapper for TypeScript/JavaS
 
 🛡️ **Type-safe** - Written in TypeScript with love ❤️
 
-🤏 **Tiny** - Simple `sendMessage` call cost some [![bundlejs](https://edge.bundlejs.com/?text=import%20%7B%20Telegram%20%7D%20from%20%22wrappergram%22%3B%0A%0Aconst%20telegram%20%3D%20new%20Telegram%28process.env.BOT_TOKEN%29%3B%0A%0Atelegram.api.sendMessage%28%7B%0A%20%20%20%20chat_id%3A%20617580375%2C%0A%20%20%20%20text%3A%20%22Hello%21%22%2C%0A%7D%29%3B&badge)](https://bundlejs.com/?q=wrappergram&treeshake=%5B*%5D&text=%22const+telegram+%3D+new+Telegram%28process.env.BOT_TOKEN%29%3B%5Cn%5Cntelegram.api.sendMessage%28%7B%5Cn++++chat_id%3A+617580375%2C%5Cn++++text%3A+%5C%22Hello%21%5C%22%2C%5Cn%7D%29%3B%22) in bundle size. So it is a good choice for browser/serverless environments
+🤏 **Tiny** - Simple `sendMessage` call cost some [![bundlejs](https://edge.bundlejs.com/?text=import%20%7B%20Telegram%20%7D%20from%20%22wrappergram%22%3B%0A%0Aconst%20telegram%20%3D%20new%20Telegram%28process.env.BOT_TOKEN%29%3B%0A%0Atelegram.api.sendMessage%28%7B%0A%20%20%20%20chat_id%3A%20617580375%2C%0A%20%20%20%20text%3A%20%22Hello%21%22%2C%0A%7D%29%3B&badge)](https://bundlejs.com/?q=wrappergram&treeshake=%5B*%5D&text=%22const+telegram+%3D+new+Telegram%28process.env.BOT_TOKEN+as+string%29%3B%5Cn%5Cntelegram.api.sendMessage%28%7B%5Cn++++chat_id%3A+617580375%2C%5Cn++++text%3A+%5C%22Hello%21%5C%22%2C%5Cn%7D%29%3B%22) in bundle size. So it is a good choice for browser/serverless environments
 
 But if you need a more complete framework, then please look to [`GramIO`](https://gramio.dev/).
 
@@ -46,7 +46,7 @@ for await (const update of getUpdates(telegram)) {
 }
 ```
 
-This example on bundlejs cost [![bundlejs](<https://edge.bundlejs.com/?text=import%20{%20Telegram,%20getUpdates%20}%20from%20%22wrappergram%22;%20const%20telegram%20=%20new%20Telegram(%22%22);%20telegram.api.sendMessage({%20chat_id:%20617580375,%20text:%20%22Hello!%22,%20});%20for%20await%20(const%20update%20of%20getUpdates(telegram))%20{%20console.log(update);%20if%20(update.message?.from)%20{%20telegram.api.sendMessage({%20chat_id:%20update.message.from.id,%20text:%20%22Hi!%20Thanks%20for%20the%20message%22,%20});%20}%20}&badge>)](https://bundlejs.com/?q=wrappergram&treeshake=%5B*%5D&share=MYewdgzgLgBFCmAbeBzATgQwLYwLwzHgHcYAVJVTLACgAc0Rh4IIA6eMAN1YCEB5UgH1SfANIBRAHIBKANwAoeQmTpsrDLQCWrCBwAmAWWYQMKeNQDe8mDZjAAFhiiDNegFwwAbAEYA7AFYADgAGAGYAgBprWwQADygPACIACSREEABCRKiAXzlFADMQNBgMIgxNWGpQSFgAV1o9J3gYEAKYMygAVUbmiGplSmxpaRgrWztwCBBkVnSUagamhHzom012xd6EVixjU3gAflYChixR8YmYilUsdS0dfSMWA8s1q4mHJxd3GCXm3b7MwnM6sVxRD4fOIJGApTQZMiOMAAawgMCKJSg9haexeZmy7wmeQURPkOSAA)
+This example on bundlejs cost [![bundlejs](https://deno.bundlejs.com/badge?q=wrappergram&treeshake=[*]&share=MYewdgzgLgBFCmAbeBzATgQwLYwLwzHgHcYAVJVTLACgAc0Rh4IIA6eMAN1YCEB5UgH1SfANIBRAHIBKANwAoeQmTpsrDLQCWrCBwAmAWWYQMKeNQDe8mDZjAAFhiiDNegFwwAbAEYA7AFYADgAGAGYAgBprWwQADygPACIACSREEABCRKiAXzlFADMQNBgMIgxNWGpQSFgAV1o9J3gYEAKYMygAVUbmiGplSmxpaRgrWztwCBBkVnSUagamhHzom012xd6EVixjU3gAflYChixR8YmYilUsdS0dfSMWA8s1q4mHJxd3GCXm3b7MwnM6sVxRD4fOIJGApTQZMiOMAAawgMCKJSg9haexeZmy7wmeQURPkOSAA)](https://bundlejs.com/?q=wrappergram&treeshake=%5B*%5D&share=MYewdgzgLgBFCmAbeBzATgQwLYwLwzHgHcYAVJVTLACgAc0Rh4IIA6eMAN1YCEB5UgH1SfANIBRAHIBKANwAoeQmTpsrDLQCWrCBwAmAWWYQMKeNQDe8mDZjAAFhiiDNegFwwAbAEYA7AFYADgAGAGYAgBprWwQADygPACIACSREEABCRKiAXzlFADMQNBgMIgxNWGpQSFgAV1o9J3gYEAKYMygAVUbmiGplSmxpaRgrWztwCBBkVnSUagamhHzom012xd6EVixjU3gAflYChixR8YmYilUsdS0dfSMWA8s1q4mHJxd3GCXm3b7MwnM6sVxRD4fOIJGApTQZMiOMAAawgMCKJSg9haexeZmy7wmeQURPkOSAA)
 
 > [!IMPORTANT]
 > Use `getUpdates` only **once** in your code otherwise it will cause double calls to [getUpdates](https://core.telegram.org/bots/api#getupdates)
@@ -83,7 +83,7 @@ telegram.api.sendMessage({
 });
 ```
 
-This example cost - [![bundlejs](<https://edge.bundlejs.com/?text=import%20{%20Telegram,%20getUpdates%20}%20from%20%22wrappergram%22;%20const%20telegram%20=%20new%20Telegram(process.env.BOT_TOKEN%20as%20string);%20telegram.api.sendMessage({%20chat_id:%20617580375,%20text:%20%22Hello!%22,%20reply_markup:%20new%20InlineKeyboard().url(%22GitHub%22,%20%22https://github.com/gramiojs/wrappergram%22)%20});&badge>)](https://bundlejs.com/?q=wrappergram&treeshake=%5B*%5D&text=%22const+telegram+%3D+new+Telegram%28process.env.BOT_TOKEN+as+string%29%3B+%5Cn%5Cntelegram.api.sendMessage%28%7B+%5Cn++chat_id%3A+617580375%2C+%5Cn++text%3A+%5C%22Hello%21%5C%22%2C+%5Cn++reply_markup%3A+new+InlineKeyboard%28%29.url%28%5C%22GitHub%5C%22%2C+%5C%22https%3A%2F%2Fgithub.com%2Fgramiojs%2Fwrappergram%5C%22%29+%5Cn%7D%29%3B%22)
+This example cost - [![bundlejs](<https://deno.bundlejs.com/badge?q=wrappergram,@gramio/keyboards&treeshake=[*],[*]&text=%22const+telegram+=+new+Telegram(process.env.BOT_TOKEN);\n\ntelegram.api.sendMessage({\n++chat_id:+617580375,\n++text:+%22Hello!%22,\n++reply_markup:+new+InlineKeyboard().url(%22GitHub%22,+%22https://github.com/gramiojs/wrappergram%22)\n});%22>)](https://bundlejs.com/?q=wrappergram%2C%40gramio%2Fkeyboards&treeshake=%5B*%5D%2C%5B*%5D&text=%22const+telegram+%3D+new+Telegram%28process.env.BOT_TOKEN%29%3B%5Cn%5Cntelegram.api.sendMessage%28%7B%5Cn++chat_id%3A+617580375%2C%5Cn++text%3A+%5C%22Hello%21%5C%22%2C%5Cn++reply_markup%3A+new+InlineKeyboard%28%29.url%28%5C%22GitHub%5C%22%2C+%5C%22https%3A%2F%2Fgithub.com%2Fgramiojs%2Fwrappergram%5C%22%29%5Cn%7D%29%3B%22)
 
 [Read more here](https://gramio.dev/keyboards/overview)
 
@@ -107,6 +107,6 @@ telegram.api.sendDocument({
 });
 ```
 
-This example cost - [![bundlejs](<https://edge.bundlejs.com/?text=import%20{%20Telegram,%20MediaUpload%20}%20from%20%22wrappergram%22;%20const%20telegram%20=%20new%20Telegram(process.env.BOT_TOKEN%20as%20string);%20telegram.api.sendPhoto({%20chat_id:%20%22@gramio_forum%22,%20text:%20%22Hello,%20world!%22,%20photo:%20MediaUpload.path(%22./cute-cat.png%22),%20});&badge>)](https://bundlejs.com/?q=wrappergram&treeshake=%5B*%5D&text=%22const+telegram+%3D+new+Telegram%28process.env.BOT_TOKEN%29%3B+%5Cn%5Cntelegram.api.sendPhoto%28%7B+%5Cn++chat_id%3A+%5C%22%40gramio_forum%5C%22%2C+%5Cn++text%3A+%5C%22Hello%2C+world%21%5C%22%2C+%5Cn++photo%3A+MediaUpload.path%28%5C%22.%2Fcute-cat.png%5C%22%29%2C+%5Cn%7D%29%3B%22)
+This example cost - [![bundlejs](<https://deno.bundlejs.com/badge?q=wrappergram&treeshake=[*]&text=%22const+telegram+=+new+Telegram(process.env.BOT_TOKEN);+\n\ntelegram.api.sendPhoto({+\n++chat_id:+%22@gramio_forum%22,+\n++text:+%22Hello,+world!%22,+\n++photo:+MediaUpload.path(%22./cute-cat.png%22),+\n});%22>)](https://bundlejs.com/?q=wrappergram&treeshake=%5B*%5D&text=%22const+telegram+%3D+new+Telegram%28process.env.BOT_TOKEN%29%3B+%5Cn%5Cntelegram.api.sendPhoto%28%7B+%5Cn++chat_id%3A+%5C%22%40gramio_forum%5C%22%2C+%5Cn++text%3A+%5C%22Hello%2C+world%21%5C%22%2C+%5Cn++photo%3A+MediaUpload.path%28%5C%22.%2Fcute-cat.png%5C%22%29%2C+%5Cn%7D%29%3B%22)
 
 [Read more here](https://gramio.dev/files/overview)
