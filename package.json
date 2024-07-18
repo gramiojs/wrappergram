@@ -1,6 +1,6 @@
 {
     "name": "wrappergram",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "main": "./dist/index.cjs",
     "description": "Simple and tiny code-generated Telegram Bot API wrapper for TypeScript/JavaScript with file upload support",
     "keywords": [
@@ -16,6 +16,9 @@
         "tiny",
         "long-polling"
     ],
+    "scripts": {
+        "prepublishOnly": "bunx pkgroll"
+    },
     "module": "./dist/index.js",
     "types": "./dist/index.d.ts",
     "exports": {

@@ -44,6 +44,9 @@ jobs:
             - name: Type-check
               run: tsc --noEmit
 
+            - name: Run publint
+              run: bunx publint
+
             - name: Setup Deno
               uses: denoland/setup-deno@v1
 
