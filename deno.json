@@ -1,0 +1,12 @@
+{
+    "name": "@gramio/wrappergram",
+    "version": "0.0.1",
+    "exports": "./src/index.ts",
+    "publish": {
+        "include": ["deno.json", "src", "README.md", "tsconfig.json"]
+    },
+    "imports": {
+        "@gramio/types": "jsr:@gramio/types@^7.7.2",
+        "@gramio/files": "jsr:@gramio/files@^0.0.12"
+    }
+}

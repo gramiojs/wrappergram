@@ -97,4 +97,4 @@ telegram.api.sendDocument({
 });
 ```
 
-[Read more her](https://gramio.dev/files/overview)
+[Read more here](https://gramio.dev/files/overview)
