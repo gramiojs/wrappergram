@@ -44,6 +44,9 @@ jobs:
             - name: Type-check
               run: tsc --noEmit
 
+            - name: Build package
+              run: bun prepublishOnly
+
             - name: Run publint
               run: bunx publint
 
