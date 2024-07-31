@@ -1,49 +1,48 @@
 {
-    "name": "wrappergram",
-    "version": "1.0.0",
-    "main": "./dist/index.cjs",
-    "description": "Simple and tiny code-generated Telegram Bot API wrapper for TypeScript/JavaScript with file upload support",
-    "keywords": [
-        "telegram",
-        "telegram-bot",
-        "telegram-bot-api",
-        "bot",
-        "framework",
-        "library",
-        "wrapper",
-        "types",
-        "client",
-        "tiny",
-        "long-polling"
-    ],
-    "scripts": {
-        "prepublishOnly": "bunx pkgroll"
-    },
-    "module": "./dist/index.js",
-    "types": "./dist/index.d.ts",
-    "exports": {
-        ".": {
-            "require": {
-                "types": "./dist/index.d.cts",
-                "default": "./dist/index.cjs"
-            },
-            "import": {
-                "types": "./dist/index.d.ts",
-                "default": "./dist/index.js"
-            }
-        }
-    },
-    "type": "module",
-    "devDependencies": {
-        "@types/bun": "latest",
-        "pkgroll": "^2.1.1",
-        "typescript": "^5.5.3"
-    },
-    "dependencies": {
-        "@gramio/files": "^0.0.12",
-        "@gramio/types": "^7.7.2"
-    },
-    "files": [
-        "dist"
-    ]
+	"name": "wrappergram",
+	"version": "1.1.0",
+	"main": "./dist/index.cjs",
+	"description": "Simple and tiny code-generated Telegram Bot API wrapper for TypeScript/JavaScript with file upload support",
+	"keywords": [
+		"telegram",
+		"telegram-bot",
+		"telegram-bot-api",
+		"bot",
+		"framework",
+		"library",
+		"wrapper",
+		"types",
+		"client",
+		"tiny",
+		"long-polling"
+	],
+	"scripts": {
+		"prepublishOnly": "bunx pkgroll"
+	},
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"require": {
+				"types": "./dist/index.d.cts",
+				"default": "./dist/index.cjs"
+			},
+			"import": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			}
+		}
+	},
+	"type": "module",
+	"devDependencies": {
+		"@types/bun": "latest",
+		"mitata": "^0.1.11",
+		"pkgroll": "^2.4.2",
+		"typescript": "^5.5.4"
+	},
+	"dependencies": {
+		"@gramio/files": "^0.0.12",
+		"@gramio/types": "^7.8.0"
+	},
+	"files": ["dist"]
 }
