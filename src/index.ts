@@ -4,9 +4,9 @@
  */
 import { convertJsonToFormData } from "@gramio/files";
 import type { APIMethodParams, TelegramAPIResponse } from "@gramio/types";
-import type { APIMethodRawResponse } from "./utils";
+import type { APIMethodRawResponse } from "./utils.ts";
 
-export { getUpdates } from "./utils";
+export { getUpdates } from "./utils.ts";
 export * from "@gramio/files";
 export type * from "@gramio/types";
 
