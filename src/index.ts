@@ -57,6 +57,7 @@ export class Telegram {
 	 * else console.log(`New message id is ${response.result.message_id}`);
 	 * ```
 	 */
+	// TODO: hooks, middlewares = great API
 	readonly api = new Proxy({} as APIMethodRawResponse, {
 		get:
 			<T extends keyof APIMethodRawResponse>(
