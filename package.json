@@ -44,5 +44,6 @@
 		"@gramio/files": ">=0.1.0 <1.0.0",
 		"@gramio/types": "*"
 	},
-	"files": ["dist"]
+	"files": ["dist"],
+	"license": "MIT"
 }
