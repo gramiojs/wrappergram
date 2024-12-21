@@ -1,5 +1,5 @@
 /**
- *
+ * Simple and tiny code-generated Telegram Bot API wrapper for TypeScript/JavaScript with file upload support
  * @module
  */
 import { convertJsonToFormData } from "@gramio/files";

@@ -1,4 +1,4 @@
-import { baseline, bench, group, run } from "mitata";
+import {  bench, group, run } from "mitata";
 
 function callAPI(method: any, args: number) {
 	return args;

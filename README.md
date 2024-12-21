@@ -4,6 +4,7 @@
 
 [![Bot API](https://img.shields.io/badge/Bot%20API-7.7+-blue?logo=telegram&style=flat&labelColor=000&color=3b82f6)](https://core.telegram.org/bots/api)
 [![npm](https://img.shields.io/npm/v/wrappergram?logo=npm&style=flat&labelColor=000&color=3b82f6)](https://www.npmjs.org/package/wrappergram)
+[![npm downloads](https://img.shields.io/npm/dw/wrappergram?logo=npm&style=flat&labelColor=000&color=3b82f6)](https://www.npmjs.org/package/wrappergram)
 [![JSR](https://jsr.io/badges/@gramio/wrappergram)](https://jsr.io/@gramio/wrappergram)
 [![JSR Score](https://jsr.io/badges/@gramio/wrappergram/score)](https://jsr.io/@gramio/wrappergram)
 [![bundlejs](<https://deno.bundlejs.com/badge?q=wrappergram&treeshake=[*]&text=%22const+telegram+=+new+Telegram(process.env.BOT_TOKEN+as+string);\n\ntelegram.api.sendMessage({\n++++chat_id:+617580375,\n++++text:+%22Hello!%22,\n});%22>)](https://bundlejs.com/?q=wrappergram&treeshake=%5B*%5D&text=%22const+telegram+%3D+new+Telegram%28process.env.BOT_TOKEN+as+string%29%3B%5Cn%5Cntelegram.api.sendMessage%28%7B%5Cn++++chat_id%3A+617580375%2C%5Cn++++text%3A+%5C%22Hello%21%5C%22%2C%5Cn%7D%29%3B%22)
