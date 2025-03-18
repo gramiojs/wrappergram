@@ -3,10 +3,10 @@
     "version": "0.0.1",
     "exports": "./src/index.ts",
     "publish": {
-        "include": ["deno.json", "src", "README.md", "LICENSE"]
+        "include": ["src", "README.md", "LICENSE"]
     },
     "imports": {
-        "@gramio/types": "jsr:@gramio/types@^8.1.0",
-        "@gramio/files": "jsr:@gramio/files@^0.1.0"
+        "@gramio/types": "jsr:@gramio/types@^8.3.3",
+        "@gramio/files": "jsr:@gramio/files@^0.2.0"
     }
 }

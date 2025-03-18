@@ -2,9 +2,9 @@
  * Simple and tiny code-generated Telegram Bot API wrapper for TypeScript/JavaScript with file upload support
  * @module
  */
-import { convertJsonToFormData } from "@gramio/files";
+import { extractFilesToFormData, isMediaUpload } from "@gramio/files";
 import type { APIMethodParams, TelegramAPIResponse } from "@gramio/types";
-import type { APIMethodRawResponse } from "./utils.ts";
+import { simplifyObject, type APIMethodRawResponse } from "./utils.ts";
 
 export { getUpdates } from "./utils.ts";
 export * from "@gramio/files";
@@ -65,17 +65,26 @@ export class Telegram {
 				method: T,
 			) =>
 			async (args: APIMethodParams<T>) => {
-				// @ts-expect-error fix types at convertJsonToFormData
-				const formData = await convertJsonToFormData(method, args);
+				let url = `${this.options.baseURL}${this.token}/${method}`;
+				let requestOptions: RequestInit = { method: "POST", headers: {}, ...this.options.requestOptions };
+				
+				if(args && isMediaUpload(method, args)) {
+					const [formData, optionsWithoutFiles] = await extractFilesToFormData(method, args);
 
-				const response = await fetch(
-					`${this.options.baseURL}${this.token}/${method}`,
-					{
-						method: "POST",
-						body: formData,
-						...this.options.requestOptions,
-					},
-				);
+				if (Object.keys(optionsWithoutFiles).length) {
+						url += `?${new URLSearchParams(simplifyObject(optionsWithoutFiles)).toString()}`;
+					}
+
+					requestOptions.body = formData;
+				} else {
+					requestOptions.body = JSON.stringify(args);
+					requestOptions.headers = {
+						...requestOptions.headers,
+						"Content-Type": "application/json",
+					};
+				}
+
+				const response = await fetch(url, requestOptions);
 
 				return response.json() as Promise<TelegramAPIResponse<T>>;
 			},
