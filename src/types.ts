@@ -85,130 +85,57 @@ export type SuppressedAPIMethods<
 				) => Promise<MaybeSuppressedReturn<APIMethod, IsSuppressed>>;
 };
 
-// === Hook Types ===
+// === Middleware ===
 
-type AnyTelegramMethod<Methods extends keyof APIMethods> = {
-	[APIMethod in Methods]: {
-		method: APIMethod;
-		params: APIMethodParams<APIMethod>;
-	};
-}[Methods];
-
-type AnyTelegramMethodWithReturn<Methods extends keyof APIMethods> = {
-	[APIMethod in Methods]: {
-		method: APIMethod;
-		params: APIMethodParams<APIMethod>;
-		response: APIMethodReturn<APIMethod>;
-	};
-}[Methods];
-
-type AnyTelegramError<Methods extends keyof APIMethods = keyof APIMethods> = {
-	[APIMethod in Methods]: TelegramError<APIMethod>;
-}[Methods];
-
-/**
- * Namespace with wrappergram hooks types
- *
- * Modeled after GramIO's hook system for API call lifecycle.
- */
-export namespace Hooks {
-	/** Argument type for {@link PreRequest} */
-	export type PreRequestContext<
-		Methods extends keyof APIMethods = keyof APIMethods,
-	> = AnyTelegramMethod<Methods> & {
+/** Middleware context — shared mutable state that flows through the middleware chain */
+export type MiddlewareContext<
+	Methods extends keyof APIMethods = keyof APIMethods,
+> = {
+	[M in Methods]: {
+		method: M;
+		params: APIMethodParams<M>;
 		/**
 		 * Set by middleware (e.g. `@gramio/files`) to provide FormData body
 		 * instead of JSON. When set, remaining `params` are sent as URL query string.
 		 */
 		formData?: FormData;
 	};
+}[Methods];
 
-	/**
-	 * Type for `preRequest` hook.
-	 *
-	 * Called before sending a request to Telegram Bot API.
-	 * Can mutate method/params and set `formData` for file uploads.
-	 *
-	 * @example
-	 * ```ts
-	 * telegram.preRequest((context) => {
-	 *     if (context.method === "sendMessage") {
-	 *         context.params.text = "mutated!";
-	 *     }
-	 *     return context;
-	 * });
-	 * ```
-	 */
-	export type PreRequest<
-		Methods extends keyof APIMethods = keyof APIMethods,
-	> = (
-		ctx: PreRequestContext<Methods>,
-	) => MaybePromise<PreRequestContext<Methods>>;
-
-	/**
-	 * Type for `onResponse` hook.
-	 *
-	 * Called when API returns a successful response.
-	 *
-	 * @example
-	 * ```ts
-	 * telegram.onResponse((context) => {
-	 *     console.log(`${context.method} succeeded`);
-	 * });
-	 * ```
-	 */
-	export type OnResponse<
-		Methods extends keyof APIMethods = keyof APIMethods,
-	> = (ctx: AnyTelegramMethodWithReturn<Methods>) => unknown;
-
-	/**
-	 * Type for `onResponseError` hook.
-	 *
-	 * Called when API returns an error. Runs before throwing (or suppressing).
-	 *
-	 * @example
-	 * ```ts
-	 * telegram.onResponseError((error, api) => {
-	 *     console.error(`${error.method} failed: ${error.message}`);
-	 * });
-	 * ```
-	 */
-	export type OnResponseError<
-		Methods extends keyof APIMethods = keyof APIMethods,
-	> = (error: AnyTelegramError<Methods>, api: SuppressedAPIMethods) => unknown;
-
-	/** Argument type for {@link OnApiCall} */
-	export type OnApiCallContext<
-		Methods extends keyof APIMethods = keyof APIMethods,
-	> = AnyTelegramMethod<Methods>;
-
-	/**
-	 * Type for `onApiCall` hook (wrap-style).
-	 *
-	 * Wraps the entire API call execution, enabling tracing/instrumentation.
-	 *
-	 * @example
-	 * ```ts
-	 * telegram.onApiCall(async (context, next) => {
-	 *     const start = performance.now();
-	 *     const result = await next();
-	 *     console.log(`${context.method} took ${performance.now() - start}ms`);
-	 *     return result;
-	 * });
-	 * ```
-	 */
-	export type OnApiCall<
-		Methods extends keyof APIMethods = keyof APIMethods,
-	> = (
-		ctx: OnApiCallContext<Methods>,
-		next: () => Promise<unknown>,
-	) => Promise<unknown>;
-
-	/** Store for all hook arrays */
-	export interface Store {
-		preRequest: PreRequest[];
-		onResponse: OnResponse[];
-		onResponseError: OnResponseError[];
-		onApiCall: OnApiCall[];
-	}
-}
+/**
+ * Middleware function that wraps the API call lifecycle.
+ *
+ * - Mutate `context.params` before `next()` (like preRequest)
+ * - Set `context.formData` for file uploads
+ * - Handle result after `next()` (like onResponse)
+ * - Catch errors from `next()` (like onResponseError)
+ *
+ * @example
+ * ```ts
+ * // Logging middleware
+ * const logger: Middleware = async (context, next) => {
+ *     console.log(`→ ${context.method}`);
+ *     const result = await next();
+ *     console.log(`← ${context.method}`);
+ *     return result;
+ * };
+ *
+ * // Error handling middleware
+ * const errorHandler: Middleware = async (context, next) => {
+ *     try {
+ *         return await next();
+ *     } catch (error) {
+ *         if (error instanceof TelegramError) {
+ *             console.error(`${error.method} failed: ${error.message}`);
+ *         }
+ *         throw error;
+ *     }
+ * };
+ * ```
+ */
+export type Middleware<
+	Methods extends keyof APIMethods = keyof APIMethods,
+> = (
+	context: MiddlewareContext<Methods>,
+	next: () => Promise<unknown>,
+) => Promise<unknown>;
