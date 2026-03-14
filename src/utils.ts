@@ -1,22 +1,6 @@
-import type {
-	APIMethodParams,
-	APIMethods,
-	TelegramAPIResponse,
-	TelegramUpdate,
-} from "@gramio/types";
+import type { TelegramUpdate } from "@gramio/types";
 import type { Telegram } from "./index.ts";
-
-export type APIMethodRawResponse = {
-	[APIMethod in keyof APIMethods]: APIMethodParams<APIMethod> extends undefined
-		? () => Promise<TelegramAPIResponse<APIMethod>>
-		: undefined extends APIMethodParams<APIMethod>
-			? (
-					params?: APIMethodParams<APIMethod>,
-				) => Promise<TelegramAPIResponse<APIMethod>>
-			: (
-					params: APIMethodParams<APIMethod>,
-				) => Promise<TelegramAPIResponse<APIMethod>>;
-};
+import { TelegramError } from "./errors.ts";
 
 /**
  * A generator function that implements [long-polling](https://en.wikipedia.org/wiki/Push_technology#Long_polling)
@@ -41,23 +25,22 @@ export async function* getUpdates(telegram: Telegram) {
 
 	while (true) {
 		const updates = await telegram.api.getUpdates({
+			suppress: true,
 			offset,
 		});
 
-		if (!updates.ok || !updates.result.length) continue;
+		if (updates instanceof TelegramError || !updates.length) continue;
 
-		for (const update of updates.result) {
+		for (const update of updates) {
 			yield update;
 			offset = update.update_id + 1;
 		}
 	}
 }
 
-
 function convertToString(value: unknown): string {
 	const typeOfValue = typeof value;
 
-	// wtf
 	if (typeOfValue === "string") return value as string;
 	if (typeOfValue === "object") return JSON.stringify(value);
 	return String(value);
