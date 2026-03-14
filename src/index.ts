@@ -18,7 +18,7 @@ import type {
 import { simplifyObject } from "./utils.ts";
 
 export { TelegramError } from "./errors.ts";
-export { getUpdates } from "./utils.ts";
+export { getUpdates, withRetries } from "./utils.ts";
 export type * from "./types.ts";
 export type * from "@gramio/types";
 
