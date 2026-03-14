@@ -43,6 +43,7 @@
 	"dependencies": {
 		"@gramio/types": "^9.0.1"
 	},
+	"sideEffects": false,
 	"files": ["dist"],
 	"license": "MIT"
 }
