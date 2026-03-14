@@ -31,6 +31,16 @@
 				"types": "./dist/index.d.ts",
 				"default": "./dist/index.js"
 			}
+		},
+		"./utils": {
+			"require": {
+				"types": "./dist/utils.d.cts",
+				"default": "./dist/utils.cjs"
+			},
+			"import": {
+				"types": "./dist/utils.d.ts",
+				"default": "./dist/utils.js"
+			}
 		}
 	},
 	"type": "module",
