@@ -6,7 +6,6 @@
         "include": ["src", "README.md", "LICENSE"]
     },
     "imports": {
-        "@gramio/types": "jsr:@gramio/types@^8.3.3",
-        "@gramio/files": "jsr:@gramio/files@^0.2.0"
+        "@gramio/types": "jsr:@gramio/types@^8.3.3"
     }
 }
