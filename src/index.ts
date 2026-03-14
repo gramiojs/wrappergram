@@ -10,7 +10,6 @@ import type {
 import { TelegramError } from "./errors.ts";
 import type {
 	FullParams,
-	MaybeArray,
 	Middleware,
 	MiddlewareContext,
 	SuppressedAPIMethods,
@@ -38,13 +37,45 @@ export interface TelegramOptions {
 	 * {@link https://developer.mozilla.org/en-US/docs/Web/API/RequestInit | MDN}
 	 */
 	fetchOptions?: Omit<RequestInit, "method" | "body">;
+	/**
+	 * Middleware chain that wraps every API call.
+	 * Each middleware receives `(context, next)` — mutate params before `next()`,
+	 * set `context.formData` for file uploads, handle results after, or catch errors.
+	 *
+	 * @example
+	 * ```ts
+	 * import { Telegram, type Middleware } from "wrappergram";
+	 * import { isMediaUpload, extractFilesToFormData } from "@gramio/files";
+	 * import { FormattableMap } from "@gramio/format";
+	 *
+	 * const format: Middleware = (context, next) => {
+	 *     const fn = FormattableMap[context.method];
+	 *     if (fn && context.params) context.params = fn(context.params);
+	 *     return next();
+	 * };
+	 *
+	 * const files: Middleware = async (context, next) => {
+	 *     if (context.params && isMediaUpload(context.method, context.params)) {
+	 *         const [formData, rest] = await extractFilesToFormData(context.method, context.params);
+	 *         if (formData) context.formData = formData;
+	 *         context.params = rest;
+	 *     }
+	 *     return next();
+	 * };
+	 *
+	 * const telegram = new Telegram("BOT_TOKEN", {
+	 *     middlewares: [format, files],
+	 * });
+	 * ```
+	 */
+	middlewares?: Middleware[];
 }
 
 /**
  * Main class of the library.
  *
  * Use {@link Telegram.api | api} to call Telegram Bot API methods.
- * Use {@link Telegram.use | .use()} to add middlewares that wrap every API call.
+ * Pass middlewares via {@link TelegramOptions.middlewares | options.middlewares}.
  *
  * Without middlewares it's just `fetch` + `JSON.stringify` — zero overhead.
  *
@@ -59,32 +90,6 @@ export interface TelegramOptions {
  *     text: "Hello, world!"
  * });
  * ```
- *
- * @example With `@gramio/files` and `@gramio/format` middlewares:
- * ```ts
- * import { Telegram } from "wrappergram";
- * import { isMediaUpload, extractFilesToFormData } from "@gramio/files";
- * import { FormattableMap } from "@gramio/format";
- *
- * const filesMiddleware: Middleware = async (context, next) => {
- *     if (context.params && isMediaUpload(context.method, context.params)) {
- *         const [formData, rest] = await extractFilesToFormData(context.method, context.params);
- *         if (formData) context.formData = formData;
- *         context.params = rest;
- *     }
- *     return next();
- * };
- *
- * const formatMiddleware: Middleware = (context, next) => {
- *     const fn = FormattableMap[context.method];
- *     if (fn && context.params) context.params = fn(context.params);
- *     return next();
- * };
- *
- * const telegram = new Telegram("BOT_TOKEN")
- *     .use(formatMiddleware)
- *     .use(filesMiddleware);
- * ```
  */
 export class Telegram {
 	/** Bot token */
@@ -92,80 +97,13 @@ export class Telegram {
 	/** Class {@link TelegramOptions | options} */
 	options: TelegramOptions & { baseURL: string };
 
-	private middlewares: Middleware[] = [];
+	private middlewares: Middleware[];
 
 	/** Create new instance */
 	constructor(token: string, options?: TelegramOptions) {
 		this.token = token;
 		this.options = { baseURL: "https://api.telegram.org/bot", ...options };
-	}
-
-	/**
-	 * Add a middleware that wraps every API call.
-	 *
-	 * Middlewares run in registration order.
-	 * Mutate `context.params` before `next()`, set `context.formData` for file uploads,
-	 * handle results after `next()`, or catch errors — all in one function.
-	 *
-	 * @example
-	 * ```ts
-	 * // For all methods
-	 * telegram.use(async (context, next) => {
-	 *     console.log(`→ ${context.method}`);
-	 *     const result = await next();
-	 *     console.log(`← ${context.method}`);
-	 *     return result;
-	 * });
-	 *
-	 * // For specific methods only
-	 * telegram.use("sendMessage", async (context, next) => {
-	 *     context.params.text += " (sent via wrappergram)";
-	 *     return next();
-	 * });
-	 *
-	 * // For multiple methods
-	 * telegram.use(["sendPhoto", "sendDocument"], async (context, next) => {
-	 *     console.log("Sending media...");
-	 *     return next();
-	 * });
-	 * ```
-	 */
-	use<
-		Methods extends keyof APIMethods,
-		Handler extends Middleware<Methods>,
-	>(methods: MaybeArray<Methods>, handler: Handler): this;
-
-	use(middleware: Middleware): this;
-
-	use<
-		Methods extends keyof APIMethods,
-		Handler extends Middleware<Methods>,
-	>(
-		methodsOrMiddleware: MaybeArray<Methods> | Middleware,
-		handler?: Handler,
-	) {
-		if (
-			typeof methodsOrMiddleware === "string" ||
-			Array.isArray(methodsOrMiddleware)
-		) {
-			if (!handler)
-				throw new Error("Handler is required when methods are specified");
-
-			const methods =
-				typeof methodsOrMiddleware === "string"
-					? [methodsOrMiddleware]
-					: methodsOrMiddleware;
-
-			this.middlewares.push(((context, next) => {
-				if ((methods as readonly string[]).includes(context.method))
-					return handler(context as MiddlewareContext<Methods>, next);
-				return next();
-			}) as Middleware);
-		} else {
-			this.middlewares.push(methodsOrMiddleware);
-		}
-
-		return this;
+		this.middlewares = options?.middlewares ?? [];
 	}
 
 	/**

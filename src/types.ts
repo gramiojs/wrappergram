@@ -7,7 +7,6 @@ import type { TelegramError } from "./errors.ts";
 
 /** Type for maybe {@link Promise} or may not */
 export type MaybePromise<T> = Promise<T> | T;
-export type MaybeArray<T> = T | T[];
 
 // === Suppress ===
 
