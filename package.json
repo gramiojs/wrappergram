@@ -1,8 +1,8 @@
 {
 	"name": "wrappergram",
-	"version": "1.3.0",
+	"version": "2.0.0",
 	"main": "./dist/index.cjs",
-	"description": "Simple and tiny code-generated Telegram Bot API wrapper for TypeScript/JavaScript with file upload support",
+	"description": "Simple and tiny Telegram Bot API wrapper with middleware hooks and opt-in file/format support",
 	"keywords": [
 		"telegram",
 		"telegram-bot",
@@ -31,6 +31,16 @@
 				"types": "./dist/index.d.ts",
 				"default": "./dist/index.js"
 			}
+		},
+		"./utils": {
+			"require": {
+				"types": "./dist/utils.d.cts",
+				"default": "./dist/utils.cjs"
+			},
+			"import": {
+				"types": "./dist/utils.d.ts",
+				"default": "./dist/utils.js"
+			}
 		}
 	},
 	"type": "module",
@@ -41,9 +51,9 @@
 		"typescript": "^5.8.3"
 	},
 	"dependencies": {
-		"@gramio/files": "^0.3.0",
 		"@gramio/types": "^9.0.1"
 	},
+	"sideEffects": false,
 	"files": ["dist"],
 	"license": "MIT"
 }
