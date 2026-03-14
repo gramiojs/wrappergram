@@ -47,40 +47,40 @@ export type MaybeSuppressedReturn<
 	? TelegramError<Method> | APIMethodReturn<Method>
 	: APIMethodReturn<Method>;
 
-// === Per-Request Fetch Options ===
+// === Per-Request Options (second argument) ===
 
-/** Extra options that can be passed per-request alongside API params */
-export interface RequestExtra {
-	/**
-	 * Per-request fetch options. Merged on top of global {@link TelegramOptions.fetchOptions}.
-	 *
-	 * {@link https://developer.mozilla.org/en-US/docs/Web/API/RequestInit | MDN}
-	 */
-	fetchOptions?: Omit<RequestInit, "method" | "body">;
-}
-
-/** Full params type combining API params + suppress + per-request fetch options */
-export type FullParams<
-	Method extends keyof APIMethods,
-	IsSuppressed extends boolean | undefined = undefined,
-> = MaybeSuppressedParams<Method, IsSuppressed> & RequestExtra;
+/**
+ * Per-request options passed as the second argument to API methods.
+ *
+ * @example
+ * ```ts
+ * await telegram.api.sendMessage(
+ *     { chat_id: 123, text: "hi" },
+ *     { signal: AbortSignal.timeout(5000) }
+ * );
+ * ```
+ */
+export type RequestOptions = Omit<RequestInit, "method" | "body">;
 
 // === API Methods Map ===
 
-/** Map of APIMethods with {@link Suppress} and per-request {@link RequestExtra} */
+/** Map of APIMethods with {@link Suppress} and per-request {@link RequestOptions} */
 export type SuppressedAPIMethods<
 	Methods extends keyof APIMethods = keyof APIMethods,
 > = {
 	[APIMethod in Methods]: APIMethodParams<APIMethod> extends undefined
 		? <IsSuppressed extends boolean | undefined = undefined>(
-				params?: Suppress<IsSuppressed> & RequestExtra,
+				params?: Suppress<IsSuppressed>,
+				requestOptions?: RequestOptions,
 			) => Promise<MaybeSuppressedReturn<APIMethod, IsSuppressed>>
 		: undefined extends APIMethodParams<APIMethod>
 			? <IsSuppressed extends boolean | undefined = undefined>(
-					params?: FullParams<APIMethod, IsSuppressed>,
+					params?: MaybeSuppressedParams<APIMethod, IsSuppressed>,
+					requestOptions?: RequestOptions,
 				) => Promise<MaybeSuppressedReturn<APIMethod, IsSuppressed>>
 			: <IsSuppressed extends boolean | undefined = undefined>(
-					params: FullParams<APIMethod, IsSuppressed>,
+					params: MaybeSuppressedParams<APIMethod, IsSuppressed>,
+					requestOptions?: RequestOptions,
 				) => Promise<MaybeSuppressedReturn<APIMethod, IsSuppressed>>;
 };
 
@@ -111,24 +111,11 @@ export type MiddlewareContext<
  *
  * @example
  * ```ts
- * // Logging middleware
  * const logger: Middleware = async (context, next) => {
  *     console.log(`→ ${context.method}`);
  *     const result = await next();
  *     console.log(`← ${context.method}`);
  *     return result;
- * };
- *
- * // Error handling middleware
- * const errorHandler: Middleware = async (context, next) => {
- *     try {
- *         return await next();
- *     } catch (error) {
- *         if (error instanceof TelegramError) {
- *             console.error(`${error.method} failed: ${error.message}`);
- *         }
- *         throw error;
- *     }
  * };
  * ```
  */

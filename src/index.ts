@@ -9,9 +9,10 @@ import type {
 } from "@gramio/types";
 import { TelegramError } from "./errors.ts";
 import type {
-	FullParams,
+	MaybeSuppressedParams,
 	Middleware,
 	MiddlewareContext,
+	RequestOptions,
 	SuppressedAPIMethods,
 } from "./types.ts";
 import { simplifyObject } from "./utils.ts";
@@ -32,11 +33,11 @@ export interface TelegramOptions {
 	baseURL?: string;
 	/**
 	 * Global fetch options applied to every request.
-	 * Can be overridden per-request via `fetchOptions` in method params.
+	 * Can be overridden per-request via the second argument to API methods.
 	 *
 	 * {@link https://developer.mozilla.org/en-US/docs/Web/API/RequestInit | MDN}
 	 */
-	fetchOptions?: Omit<RequestInit, "method" | "body">;
+	fetchOptions?: RequestOptions;
 	/**
 	 * Middleware chain that wraps every API call.
 	 * Each middleware receives `(context, next)` — mutate params before `next()`,
@@ -127,10 +128,11 @@ export class Telegram {
 	 * });
 	 * if (result instanceof TelegramError) console.error(result.message);
 	 *
-	 * // With per-request fetch options
-	 * await telegram.api.getMe({
-	 *     fetchOptions: { signal: AbortSignal.timeout(5000) }
-	 * });
+	 * // With per-request fetch options (second argument)
+	 * await telegram.api.sendMessage(
+	 *     { chat_id: 123, text: "hi" },
+	 *     { signal: AbortSignal.timeout(5000) },
+	 * );
 	 * ```
 	 */
 	readonly api = new Proxy({} as SuppressedAPIMethods, {
@@ -139,32 +141,31 @@ export class Telegram {
 			method: T,
 		) =>
 			// biome-ignore lint/suspicious/noAssignInExpressions: cache the function
-			(_target[method] ??= ((args: FullParams<T>) => {
+			(_target[method] ??= ((
+				args: MaybeSuppressedParams<T>,
+				requestOptions?: RequestOptions,
+			) => {
 				const callSite = new Error();
 				if (Error.captureStackTrace) {
 					Error.captureStackTrace(callSite, _target[method] as Function);
 				}
-				return this._callApi(method, args, callSite);
+				return this._callApi(method, args, requestOptions, callSite);
 			}) as SuppressedAPIMethods[T]),
 	});
 
 	private async _callApi<T extends keyof APIMethods>(
 		method: T,
-		params: FullParams<T> = {} as FullParams<T>,
+		params: MaybeSuppressedParams<T> = {} as MaybeSuppressedParams<T>,
+		perRequestOptions?: RequestOptions,
 		callSite?: Error,
 	) {
-		// Extract wrappergram-specific options
+		// Extract suppress flag, keep only API params
 		const suppress = (params as Record<string, unknown>)?.suppress as
 			| boolean
 			| undefined;
-		const perRequestFetchOptions = (
-			params as Record<string, unknown>
-		)?.fetchOptions as Omit<RequestInit, "method" | "body"> | undefined;
 
-		// Clean params: remove non-API fields
 		const apiParams = { ...params } as Record<string, unknown>;
 		delete apiParams.suppress;
-		delete apiParams.fetchOptions;
 
 		// Shared mutable context for middleware chain
 		const context = { method, params: apiParams } as MiddlewareContext;
@@ -176,12 +177,11 @@ export class Telegram {
 			const reqOptions: RequestInit = {
 				method: "POST",
 				...this.options.fetchOptions,
-				...perRequestFetchOptions,
+				...perRequestOptions,
 				headers: new Headers({
 					...((this.options.fetchOptions?.headers as Record<string, string>) ??
 						{}),
-					...((perRequestFetchOptions?.headers as Record<string, string>) ??
-						{}),
+					...((perRequestOptions?.headers as Record<string, string>) ?? {}),
 				}),
 			};
 
