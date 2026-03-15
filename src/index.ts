@@ -45,27 +45,12 @@ export interface TelegramOptions {
 	 *
 	 * @example
 	 * ```ts
-	 * import { Telegram, type Middleware } from "wrappergram";
-	 * import { isMediaUpload, extractFilesToFormData } from "@gramio/files";
-	 * import { FormattableMap } from "@gramio/format";
-	 *
-	 * const format: Middleware = (context, next) => {
-	 *     const fn = FormattableMap[context.method];
-	 *     if (fn && context.params) context.params = fn(context.params);
-	 *     return next();
-	 * };
-	 *
-	 * const files: Middleware = async (context, next) => {
-	 *     if (context.params && isMediaUpload(context.method, context.params)) {
-	 *         const [formData, rest] = await extractFilesToFormData(context.method, context.params);
-	 *         if (formData) context.formData = formData;
-	 *         context.params = rest;
-	 *     }
-	 *     return next();
-	 * };
+	 * import { Telegram } from "wrappergram";
+	 * import { filesMiddleware } from "@gramio/files/middleware";
+	 * import { formatMiddleware } from "@gramio/format/middleware";
 	 *
 	 * const telegram = new Telegram("BOT_TOKEN", {
-	 *     middlewares: [format, files],
+	 *     middlewares: [formatMiddleware, filesMiddleware],
 	 * });
 	 * ```
 	 */
