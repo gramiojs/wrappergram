@@ -57,17 +57,16 @@ jobs:
               if: ${{ github.event.inputs.publish_to_jsr }}
               run: deno publish --allow-dirty --unstable-sloppy-imports
 
-            - name: Install Node
-              uses: actions/setup-node@v4
+            - name: Setup Node for npm trusted publishing
+              uses: actions/setup-node@v6
               with:
-                  node-version: "20.x"
+                  node-version: "24"
                   registry-url: "https://registry.npmjs.org"
+                  package-manager-cache: false
 
             - name: Publish package to NPM
               if: ${{ github.event.inputs.publish_to_npm }}
               run: npm publish --access public
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
             - name: GitHub Release
               uses: ncipollo/release-action@v1
