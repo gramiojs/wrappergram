@@ -132,9 +132,15 @@ export class Telegram {
 				requestOptions?: RequestOptions,
 			) => {
 				const callSite = new Error();
-				if (Error.captureStackTrace) {
-					Error.captureStackTrace(callSite, _target[method] as Function);
-				}
+				const captureStackTrace = (
+					Error as ErrorConstructor & {
+						captureStackTrace?: (
+							targetObject: object,
+							constructorOpt?: Function,
+						) => void;
+					}
+				).captureStackTrace;
+				captureStackTrace?.(callSite, _target[method] as Function);
 				return this._callApi(method, args, requestOptions, callSite);
 			}) as SuppressedAPIMethods[T]),
 	});
