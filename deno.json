@@ -1,11 +1,15 @@
 {
     "name": "@gramio/wrappergram",
-    "version": "0.0.1",
+    "version": "2.0.0",
     "exports": "./src/index.ts",
     "publish": {
-        "include": ["src", "README.md", "LICENSE"]
+        "include": [
+            "src",
+            "README.md",
+            "LICENSE"
+        ]
     },
     "imports": {
-        "@gramio/types": "jsr:@gramio/types@^8.3.3"
+        "@gramio/types": "jsr:@gramio/types@^10.3.1"
     }
 }

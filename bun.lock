@@ -5,7 +5,7 @@
     "": {
       "name": "wrappergram",
       "dependencies": {
-        "@gramio/types": "^9.0.1",
+        "@gramio/types": "^10.3.1",
       },
       "devDependencies": {
         "@types/bun": "^1.2.9",
@@ -66,7 +66,7 @@
 
     "@esbuild/win32-x64": ["@esbuild/win32-x64@0.25.2", "", { "os": "win32", "cpu": "x64" }, "sha512-kM3HKb16VIXZyIeVrM1ygYmZBKybX8N4p754bw390wGO3Tf2j4L2/WYL+4suWujpgf6GBYs3jv7TyUivdd05JA=="],
 
-    "@gramio/types": ["@gramio/types@9.0.1", "", {}, "sha512-vg+GNdkHUjElMQhFxrhYJxOjQMy+PXBq1wEGh8EYRn0yQR7l3jSBVdf8z4AlRnWydIS2BO+x2PdHPNwZGIBx1w=="],
+    "@gramio/types": ["@gramio/types@10.3.1", "", {}, "sha512-K4q9QRMSpHc+B73Vxvf/Xhcbw4VlCoWH2fCUcUWT378yGvpo1i89CqOysj1ZEr4u4LdefPKxVF6b6JDVw9TYDA=="],
 
     "@jridgewell/sourcemap-codec": ["@jridgewell/sourcemap-codec@1.5.0", "", {}, "sha512-gv3ZRaISU3fjPAgNsriBRqGWQL6quFx04YMPW/zD8XMLsU32mhCCbfbO6KZFLjvYpCZ8zyDEgqsgf+PwPaM7GQ=="],
 

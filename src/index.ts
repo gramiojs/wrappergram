@@ -4,6 +4,7 @@
  */
 import type {
 	APIMethodParams,
+	APIMethodReturn,
 	APIMethods,
 	TelegramAPIResponse,
 } from "@gramio/types";
@@ -120,7 +121,7 @@ export class Telegram {
 	 * );
 	 * ```
 	 */
-	readonly api = new Proxy({} as SuppressedAPIMethods, {
+	readonly api: SuppressedAPIMethods = new Proxy({} as SuppressedAPIMethods, {
 		get: <T extends keyof SuppressedAPIMethods>(
 			_target: SuppressedAPIMethods,
 			method: T,
@@ -143,7 +144,7 @@ export class Telegram {
 		params: MaybeSuppressedParams<T> = {} as MaybeSuppressedParams<T>,
 		perRequestOptions?: RequestOptions,
 		callSite?: Error,
-	) {
+	): Promise<APIMethodReturn<T> | TelegramError<T>> {
 		// Extract suppress flag, keep only API params
 		const suppress = (params as Record<string, unknown>)?.suppress as
 			| boolean
@@ -155,7 +156,9 @@ export class Telegram {
 		// Shared mutable context for middleware chain
 		const context = { method, params: apiParams } as MiddlewareContext;
 
-		const executeCall = async () => {
+		const executeCall = async (): Promise<
+			APIMethodReturn<T> | TelegramError<T>
+		> => {
 			let url = `${this.options.baseURL}${this.token}/${context.method}`;
 
 			// Merge fetch options: global → per-request
@@ -186,7 +189,7 @@ export class Telegram {
 			}
 
 			const response = await fetch(url, reqOptions);
-			const data = (await response.json()) as TelegramAPIResponse;
+			const data = (await response.json()) as TelegramAPIResponse<T>;
 
 			if (!data.ok) {
 				const err = new TelegramError(

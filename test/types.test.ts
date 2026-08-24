@@ -41,6 +41,28 @@ describe("api return types", () => {
 			t.api.deleteMessage({ chat_id: 1, message_id: 1 }),
 		).resolves.toEqualTypeOf<true>();
 	});
+
+	it("exposes the strict Bot API 10.3 parameter line", () => {
+		t.api.sendMessage({
+			chat_id: 1,
+			text: "ephemeral",
+			ephemeral_message_parameters: {
+				receiver_user_id: 2,
+				callback_query_id: "query",
+				replace_callback_query_message: true,
+			},
+		});
+		t.api.sendRichMessageDraft({
+			chat_id: 1,
+			draft_id: 3,
+			rich_message: { markdown: "thinking" },
+			can_stop: true,
+			keep_on_stop: true,
+		});
+
+		// @ts-expect-error Bot API 10.3 removed the legacy top-level alias
+		t.api.sendMessage({ chat_id: 1, text: "legacy", receiver_user_id: 2 });
+	});
 });
 
 describe("suppress types", () => {

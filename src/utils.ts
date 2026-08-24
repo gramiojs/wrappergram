@@ -19,7 +19,7 @@ import { TelegramError } from "./errors.ts";
  * }
  * ```
  */
-export async function* getUpdates(telegram: Telegram) {
+export async function* getUpdates(telegram: Telegram): AsyncGenerator<TelegramUpdate, void, unknown> {
 	let offset = 0;
 
 	while (true) {

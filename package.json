@@ -51,7 +51,7 @@
 		"typescript": "^5.8.3"
 	},
 	"dependencies": {
-		"@gramio/types": "^9.0.1"
+		"@gramio/types": "^10.3.1"
 	},
 	"sideEffects": false,
 	"files": ["dist"],
